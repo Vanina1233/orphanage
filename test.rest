@@ -1,4 +1,4 @@
-POST  http://localhost:3001/api/user
+POST  http://localhost:3001/api/user/register
 Content-Type: application/json
 
 {
@@ -9,3 +9,17 @@ Content-Type: application/json
    "address"  : "String",
     "phone"  : " 23456677"
 }
+
+###
+
+POST  http://localhost:3001/api/posts
+Content-Type: application/json
+
+{
+   "type" : "ALERT",
+   "userId" : "853ea835-0cfd-4365-bfd6-90b9f2bab81b"
+}
+
+###
+
+GET http://localhost:3001/api/user

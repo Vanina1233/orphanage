@@ -22,32 +22,63 @@ enum PostType {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  firstname String
-  lastname  String
-  email     String   @unique
-  hash      String
-  type      UserType @default(DONATOR)
-  address   String
-  phone     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String          @id @default(uuid())
+  firstname     String
+  lastname      String
+  email         String          @unique
+  hash          String
+  type          UserType        @default(DONATOR)
+  address       String
+  phone         String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  posts         Post[]
+  Don           Don[]
+  Pub           Pub[]
+  PaymentMethod PaymentMethod[]
+
+  @@map("user")
 }
 
-// model Post {
-//   id   String   @id @default(uuid())
-//   date DateTime @default(now())
-//   type PostType @default(ACTU)
-// }
+model Post {
+  id     String   @id @default(uuid())
+  date   DateTime @default(now())
+  type   PostType @default(ACTU)
+  userId String
+  user   User     @relation(fields: [userId], references: [id])
 
-// model Don {
-//   id     String   @id @default(uuid())
-//   date   DateTime @default(now())
-//   amount Int
-// }
+  @@map("post")
+}
 
-// model PaymentMethod {
-//   id       String @id @default(uuid())
-//   card_num Int
-//   cvv      Int
-// }
+model Don {
+  id              String        @id @default(uuid())
+  date            DateTime      @default(now())
+  amount          Int
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  paymentMethodId String
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+
+  @@map("don")
+}
+
+model PaymentMethod {
+  id       String @id @default(uuid())
+  card_num Int
+  cvv      Int
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  Don      Don[]
+
+  @@map("paymentMethod")
+}
+
+model Pub {
+  id          String   @id @default(uuid())
+  description String
+  createdAt   DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("pub")
+}
